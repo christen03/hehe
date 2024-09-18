@@ -97,7 +97,7 @@ export default function Home() {
 
   const imageVariants = {
     hidden: { x: -100, opacity: 0 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       x: 0,
       opacity: 1,
       transition: {
