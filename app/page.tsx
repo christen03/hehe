@@ -29,12 +29,22 @@ interface ChecklistItem {
   completed: boolean;
 }
 
+interface ChristenImagePositions {
+  left: number;
+  rotate: number;
+}
+
+interface RyanImagePositions {
+  right: number;
+  rotate: number;
+}
+
 export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
-  const [christenImagePositions, setChristenImagePositions] = useState([]);
-  const [ryanImagePositions, setRyanImagePositions] = useState([]);
+  const [christenImagePositions, setChristenImagePositions] = useState<ChristenImagePositions[]>([]);
+  const [ryanImagePositions, setRyanImagePositions] = useState<RyanImagePositions[]>([]);
   const [windowHeight, setWindowHeight] = useState(0);
   const [items, setItems] = useState<ChecklistItem[]>([
     { id: 1, text: 'Dinner', completed: false },
