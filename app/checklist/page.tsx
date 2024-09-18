@@ -22,27 +22,26 @@ export default function ChecklistPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Julia's Birthday Checklist</h1>
-        <ul className="space-y-4">
-          {items.map(item => (
-            <li key={item.id}>
-              <label className="flex items-center space-x-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={item.completed}
-                  onChange={() => toggleItem(item.id)}
-                  className="w-5 h-5"
-                />
-                <span className={item.completed ? 'line-through' : ''}>
-                  {item.text}
-                </span>
-              </label>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <div style={{ display: 'flex', height: '100vh', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6rem' }}>
+  <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '1.5rem' }}>Julia's Birthday Checklist</h1>
+  <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+    {items.map(item => (
+      <li key={item.id} style={{ marginBottom: '1rem' }}>
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={item.completed}
+            onChange={() => toggleItem(item.id)}
+            style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.75rem' }}
+          />
+          <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
+            {item.text}
+          </span>
+        </label>
+      </li>
+    ))}
+  </ul>
+</div>
+
   );
 }

@@ -56,7 +56,7 @@
 }
 
 .imageSection {
-  height: 200vh;
+  height: 175vh;
   width: 100vw;
   position: relative;
 }
@@ -64,6 +64,17 @@
 .scatteredImage {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.messageBox {
+  padding-bottom: 50px; /* Add padding to the bottom */
+  padding-left: 100px; /* Add horizontal padding */
+  padding-right: 100px; /* Add horizontal padding */
+  background-color: transparent; /* Make background transparent */
+  border: none; /* Remove border */
+  text-align: center; /* Center the text */
+  color: #fff; /* Change text color for visibility */
+  font-size: 24px; /* Increase font size (adjust as needed) */
 }
 
 /* Background animation */

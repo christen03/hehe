@@ -22,6 +22,13 @@ import LittleBig2 from "./IMG_7570.jpeg"
 import LittleBig3 from "./IMG_8427.jpeg"
 import LittleBig4 from "./DSC01539.jpeg"
 
+
+interface ChecklistItem {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
 export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showImage, setShowImage] = useState(false);
@@ -29,6 +36,17 @@ export default function Home() {
   const [christenImagePositions, setChristenImagePositions] = useState([]);
   const [ryanImagePositions, setRyanImagePositions] = useState([]);
   const [windowHeight, setWindowHeight] = useState(0);
+  const [items, setItems] = useState<ChecklistItem[]>([
+    { id: 1, text: 'Dinner', completed: false },
+    { id: 2, text: 'Boba', completed: false },
+    { id: 3, text: 'Drugs', completed: false },
+  ]);
+
+  const toggleItem = (id: number) => {
+    setItems(items.map(item =>
+      item.id === id ? { ...item, completed: !item.completed } : item
+    ));
+  };
 
   useEffect(() => {
     // Generate random positions and rotations for each image
@@ -48,15 +66,22 @@ export default function Home() {
   }, []);
 
 
-  const { scrollY } = useScroll();
   const imageSectionRef = useRef(null);
   const isInView = useInView(imageSectionRef, { once: true });
 
 
   useEffect(() => {
     if (showConfetti) {
-      const timer = setTimeout(() => setShowArrow(true), 1000); // Show arrow 1 second after confetti
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setShowArrow(true);
+      }, 1000); 
+      const confettiTimer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 9000);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(confettiTimer);
+      };
     }
   }, [showConfetti]);
 
@@ -143,8 +168,11 @@ export default function Home() {
               repeat: Infinity,
               repeatType: "reverse",
             }}
-            className={styles.arrow}
-            // style={{ opacity: arrowOpacity }}
+            style={{
+              position: 'absolute',
+              top: '90vh', // Adjust as needed
+              transform: 'translateX(-50%)',
+            }}
           >
             <svg
               width="40"
@@ -177,8 +205,8 @@ export default function Home() {
             <Image
               src={img}
               alt={`Image ${index + 1}`}
-              width={300}
-              height={400}
+              width={index === 3 ? 350: 300}
+              height={index === 3 ? 350: 400}
               className={styles.scatteredImage}
               style={{
                 position: 'absolute',
@@ -215,6 +243,33 @@ export default function Home() {
         ))}
       </>
       </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+  <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '1.5rem' }}>Julia's Birthday Checklist</h1>
+  <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+    {items.map(item => (
+      <li key={item.id} style={{ marginBottom: '1rem' }}>
+        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={item.completed}
+            onChange={() => toggleItem(item.id)}
+            style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.75rem' }}
+          />
+          <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
+            {item.text}
+          </span>
+        </label>
+      </li>
+    ))}
+  </ul>
+</div>
+<div className={styles.messageBox}> 
+        <p>happy birthday julia! thank you for always being such a wonderful and caring person to everyone around you and being the best big and little. hope you have a great birthday, sorry we couldn’t be there in person but this website is a small token of our appreciation!!!
+        </p> 
+        <p>
+          - Christen / Ryan
+        </p>
+  </div>
     </div>
   );
 }
