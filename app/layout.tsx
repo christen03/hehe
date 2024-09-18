@@ -25,9 +25,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+       <head>
+       <link
+          href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap"
+          rel="stylesheet"
+        />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
       </body>
+      </head>
     </html>
   );
 }
