@@ -17,22 +17,36 @@ import BigLittle2 from "./img2.jpg";
 import BigLittle3 from "./img3.jpg";
 import BigLittle4 from "./img4.png";
 
+import LittleBig1 from "./IMG_4863.jpeg"
+import LittleBig2 from "./IMG_7570.jpeg"
+import LittleBig3 from "./IMG_8427.jpeg"
+import LittleBig4 from "./DSC01539.jpeg"
+
 export default function Home() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showImage, setShowImage] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
-  const [imagePositions, setImagePositions] = useState([]);
+  const [christenImagePositions, setChristenImagePositions] = useState([]);
+  const [ryanImagePositions, setRyanImagePositions] = useState([]);
   const [windowHeight, setWindowHeight] = useState(0);
 
   useEffect(() => {
     // Generate random positions and rotations for each image
-    const positions = [BigLittle1, BigLittle2, BigLittle3, BigLittle4].map(() => ({
+    const christenImages = [BigLittle1, BigLittle2, BigLittle3, BigLittle4].map(() => ({
       left: Math.random() * 10 + 5, 
-      top: -1*(Math.random()*10 + 50),
       rotate: Math.random() * 30 - 15, 
     }));
-    setImagePositions(positions);
+    setChristenImagePositions(christenImages);
   }, []);
+
+  useEffect(() => {
+    const ryanImages = [LittleBig1, LittleBig2, LittleBig3, LittleBig4].map(() => ({
+      right: Math.random() * 10 + 5, 
+      rotate: Math.random() * 30 - 15, 
+    }));
+    setRyanImagePositions(ryanImages);
+  }, []);
+
 
   const { scrollY } = useScroll();
   const imageSectionRef = useRef(null);
@@ -108,7 +122,7 @@ export default function Home() {
       <AnimatePresence>
        
 <motion.div
-  style={{ minHeight: '75vh', minWidth: '30vh' }} // Set this to the size of your image
+  style={{ minHeight: '77.5vh', minWidth: '30vh' }} // Set this to the size of your image
   initial={{ opacity: 0, scale: 0.8 }}
   animate={{ opacity: showImage ? 1 : 0, scale: showImage ? 1 : 0.8 }}
   transition={{ duration: 0.5 }}
@@ -151,9 +165,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={styles.imageSection} ref={imageSectionRef} style={{backgroundColor: 'red'}}>
+      <div className={styles.imageSection} ref={imageSectionRef}>
+      <>
       {[BigLittle1, BigLittle2, BigLittle3, BigLittle4].map((img, index) => (
-          <>
           <motion.div
             key={index}
             variants={imageVariants}
@@ -167,19 +181,39 @@ export default function Home() {
               height={400}
               className={styles.scatteredImage}
               style={{
-                // position: 'relative',
-                left: `${imagePositions[index]?.left || 0}%`,
-                top: `${imagePositions[index]?.top || 0}%`,
-                transform: `rotate(${imagePositions[index]?.rotate || 0}deg)`,
-                marginLeft: '2%'
+                position: 'absolute',
+                left: `${christenImagePositions[index]?.left || 0}%`,
+                transform: `rotate(${christenImagePositions[index]?.rotate || 0}deg)`,
+                marginLeft: '2%',
+                marginTop: `${index * 350}px`
               }}
             />
           </motion.div>
-          <div>
-            <h1>{imagePositions[index]?.top}</h1>
-            </div>
-              </>
         ))}
+      {[LittleBig1, LittleBig2, LittleBig3, LittleBig4].map((img, index) => (
+          <motion.div
+            key={index}
+            variants={imageVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            <Image
+              src={img}
+              alt={`Image ${index + 1}`}
+              width={index === 0 ? 400 : index === 3 ? 275 : 300}
+              height={index === 0 ? 300 : index === 3 ? 500 : 400}
+              className={styles.scatteredImage}
+              style={{
+                position: 'absolute',
+                right: `${ryanImagePositions[index]?.right || 0}%`,
+                transform: `rotate(${ryanImagePositions[index]?.rotate || 0}deg)`,
+                marginRight: '2%',
+                marginTop: `${index * 350 + (index == 1 ? -50 : 0)}px`
+              }}
+            />
+          </motion.div>
+        ))}
+      </>
       </div>
     </div>
   );
