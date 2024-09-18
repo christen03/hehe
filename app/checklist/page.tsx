@@ -13,7 +13,6 @@ export default function ChecklistPage() {
     { id: 1, text: 'Dinner', completed: false },
     { id: 2, text: 'Boba', completed: false },
     { id: 3, text: 'Drugs', completed: false },
-    { id: 4, text: 'Drugs', completed: false },
   ]);
 
   const toggleItem = (id: number) => {
