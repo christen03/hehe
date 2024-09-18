@@ -22,35 +22,22 @@ export default function Home() {
   const [showImage, setShowImage] = useState(false);
   const [showArrow, setShowArrow] = useState(false);
   const [imagePositions, setImagePositions] = useState([]);
+  const [windowHeight, setWindowHeight] = useState(0);
 
   useEffect(() => {
     // Generate random positions and rotations for each image
     const positions = [BigLittle1, BigLittle2, BigLittle3, BigLittle4].map(() => ({
-      left: Math.random() * 30 + 5, // 5% to 35% of screen width (left side)
-      top: Math.random() * 80 + 10,  // 10% to 90% of screen height
-      rotate: Math.random() * 30 - 15, // -15 to 15 degrees rotation
+      left: Math.random() * 10 + 5, 
+      top: -1*(Math.random()*10 + 50),
+      rotate: Math.random() * 30 - 15, 
     }));
     setImagePositions(positions);
   }, []);
+
+  const { scrollY } = useScroll();
   const imageSectionRef = useRef(null);
   const isInView = useInView(imageSectionRef, { once: true });
 
-  const { scrollY } = useScroll();
-  const opacity = useTransform(
-    scrollY,
-    [window.innerHeight, window.innerHeight + 300],
-    [0, 1]
-  );
-  const x = useTransform(
-    scrollY,
-    [window.innerHeight, window.innerHeight + 300],
-    [-100, 0]
-  );
-  const arrowOpacity = useTransform(
-    scrollY,
-    [0, window.innerHeight * 0.9, window.innerHeight],
-    [1, 1, 0]
-  );
 
   useEffect(() => {
     if (showConfetti) {
@@ -121,7 +108,7 @@ export default function Home() {
       <AnimatePresence>
        
 <motion.div
-  style={{ minHeight: '400px', minWidth: '300px' }} // Set this to the size of your image
+  style={{ minHeight: '75vh', minWidth: '30vh' }} // Set this to the size of your image
   initial={{ opacity: 0, scale: 0.8 }}
   animate={{ opacity: showImage ? 1 : 0, scale: showImage ? 1 : 0.8 }}
   transition={{ duration: 0.5 }}
@@ -143,7 +130,7 @@ export default function Home() {
               repeatType: "reverse",
             }}
             className={styles.arrow}
-            style={{ opacity: arrowOpacity }}
+            // style={{ opacity: arrowOpacity }}
           >
             <svg
               width="40"
@@ -169,29 +156,29 @@ export default function Home() {
           <>
           <motion.div
             key={index}
-            style={{
-              opacity,
-              x,
-              position: 'absolute',
-            }}
+            variants={imageVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
           >
             <Image
               src={img}
               alt={`Image ${index + 1}`}
-              width={200}
-              height={200}
+              width={300}
+              height={400}
               className={styles.scatteredImage}
               style={{
+                // position: 'relative',
                 left: `${imagePositions[index]?.left || 0}%`,
                 top: `${imagePositions[index]?.top || 0}%`,
                 transform: `rotate(${imagePositions[index]?.rotate || 0}deg)`,
+                marginLeft: '2%'
               }}
             />
           </motion.div>
           <div>
-            <h1>{imagePositions[index]?.left}</h1>
-          </div>
-          </>
+            <h1>{imagePositions[index]?.top}</h1>
+            </div>
+              </>
         ))}
       </div>
     </div>
